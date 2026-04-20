@@ -1,8 +1,8 @@
 package core.basesyntax.dao.impl;
 
+import core.basesyntax.HibernateUtil;
 import core.basesyntax.dao.SmileDao;
 import core.basesyntax.model.Smile;
-import core.basesyntax.HibernateUtil;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

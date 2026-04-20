@@ -1,8 +1,8 @@
 package core.basesyntax.dao.impl;
 
+import core.basesyntax.HibernateUtil;
 import core.basesyntax.dao.MessageDao;
 import core.basesyntax.model.Message;
-import core.basesyntax.HibernateUtil;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
