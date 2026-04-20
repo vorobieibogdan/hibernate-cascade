@@ -5,13 +5,23 @@ import core.basesyntax.dao.CommentDao;
 import core.basesyntax.model.Comment;
 import java.util.List;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 public class CommentDaoImpl implements CommentDao {
+    private final SessionFactory sessionFactory;
+
+    public CommentDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    public CommentDaoImpl() {
+        this(HibernateUtil.getSessionFactory());
+    }
 
     @Override
     public Comment create(Comment entity) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
         session.persist(entity);
         tx.commit();
@@ -21,7 +31,7 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public Comment get(Long id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         Comment comment = session.get(Comment.class, id);
         session.close();
         return comment;
@@ -29,15 +39,16 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public List<Comment> getAll() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        List<Comment> list = session.createQuery("from Comment", Comment.class).getResultList();
+        Session session = sessionFactory.openSession();
+        List<Comment> list = session.createQuery("from Comment", Comment.class)
+                .getResultList();
         session.close();
         return list;
     }
 
     @Override
     public void remove(Comment entity) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
         session.remove(entity);
         tx.commit();
