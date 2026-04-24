@@ -9,5 +9,3 @@ public abstract class AbstractDao {
         this.factory = sessionFactory;
     }
 }
-
-

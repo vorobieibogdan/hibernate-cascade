@@ -66,5 +66,3 @@ public class MessageDaoImpl implements MessageDao {
         }
     }
 }
-
-

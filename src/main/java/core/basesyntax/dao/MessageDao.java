@@ -4,5 +4,3 @@ import core.basesyntax.model.Message;
 
 public interface MessageDao extends GenericDao<Message> {
 }
-
-

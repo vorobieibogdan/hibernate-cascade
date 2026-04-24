@@ -48,5 +48,3 @@ public class Comment {
         this.smiles = smiles;
     }
 }
-
-

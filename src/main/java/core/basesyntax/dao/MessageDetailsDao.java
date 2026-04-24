@@ -7,5 +7,3 @@ public interface MessageDetailsDao {
 
     MessageDetails get(Long id);
 }
-
-
