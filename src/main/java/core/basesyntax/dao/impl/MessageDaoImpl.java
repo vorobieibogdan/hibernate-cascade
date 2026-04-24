@@ -47,8 +47,7 @@ public class MessageDaoImpl implements MessageDao {
     @Override
     public List<Message> getAll() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM Message", Message.class)
-                    .getResultList();
+            return session.createQuery("FROM Message", Message.class).getResultList();
         }
     }
 
@@ -67,6 +66,5 @@ public class MessageDaoImpl implements MessageDao {
         }
     }
 }
-
 
 

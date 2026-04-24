@@ -47,8 +47,7 @@ public class CommentDaoImpl implements CommentDao {
     @Override
     public List<Comment> getAll() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM Comment", Comment.class)
-                    .getResultList();
+            return session.createQuery("FROM Comment", Comment.class).getResultList();
         }
     }
 
@@ -67,6 +66,3 @@ public class CommentDaoImpl implements CommentDao {
         }
     }
 }
-
-
-

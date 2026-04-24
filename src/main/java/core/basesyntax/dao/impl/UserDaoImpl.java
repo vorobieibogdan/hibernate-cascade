@@ -36,19 +36,16 @@ public class UserDaoImpl implements UserDao {
     public User get(Long id) {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery(
-                            "FROM User u LEFT JOIN FETCH u.comments WHERE u.id = :id",
-                            User.class
-                    )
-                    .setParameter("id", id)
-                    .uniqueResult();
+                    "FROM User u LEFT JOIN FETCH u.comments WHERE u.id = :id",
+                    User.class
+            ).setParameter("id", id).uniqueResult();
         }
     }
 
     @Override
     public List<User> getAll() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM User", User.class)
-                    .getResultList();
+            return session.createQuery("FROM User", User.class).getResultList();
         }
     }
 
@@ -67,7 +64,3 @@ public class UserDaoImpl implements UserDao {
         }
     }
 }
-
-
-
-

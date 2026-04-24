@@ -47,8 +47,7 @@ public class SmileDaoImpl implements SmileDao {
     @Override
     public List<Smile> getAll() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM Smile", Smile.class)
-                    .getResultList();
+            return session.createQuery("FROM Smile", Smile.class).getResultList();
         }
     }
 }
