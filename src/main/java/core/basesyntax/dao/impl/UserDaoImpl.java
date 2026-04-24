@@ -1,12 +1,13 @@
 package core.basesyntax.dao.impl;
 
-import core.basesyntax.dao.UserDao;
-import core.basesyntax.model.User;
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import java.util.List;
+import core.basesyntax.dao.UserDao;
+import core.basesyntax.model.User;
 
 public class UserDaoImpl implements UserDao {
     private final SessionFactory sessionFactory;
@@ -39,7 +40,7 @@ public class UserDaoImpl implements UserDao {
                             User.class
                     )
                     .setParameter("id", id)
-                    .uniqueResult(); // повертає User або null — це ок для твого контракту
+                    .uniqueResult();
         }
     }
 
@@ -66,4 +67,5 @@ public class UserDaoImpl implements UserDao {
         }
     }
 }
+
 

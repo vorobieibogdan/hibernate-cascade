@@ -1,12 +1,14 @@
 package core.basesyntax.dao.impl;
 
-import core.basesyntax.HibernateUtil;
-import core.basesyntax.dao.MessageDao;
-import core.basesyntax.model.Message;
 import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+
+import core.basesyntax.HibernateUtil;
+import core.basesyntax.dao.MessageDao;
+import core.basesyntax.model.Message;
 
 public class MessageDaoImpl implements MessageDao {
     private final SessionFactory sessionFactory;
@@ -21,38 +23,49 @@ public class MessageDaoImpl implements MessageDao {
 
     @Override
     public Message create(Message entity) {
-        Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
-        session.persist(entity);
-        tx.commit();
-        session.close();
-        return entity;
+        Transaction tx = null;
+        try (Session session = sessionFactory.openSession()) {
+            tx = session.beginTransaction();
+            session.persist(entity);
+            tx.commit();
+            return entity;
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            throw new RuntimeException("Can't create message", e);
+        }
     }
 
     @Override
     public Message get(Long id) {
-        Session session = sessionFactory.openSession();
-        Message message = session.get(Message.class, id);
-        session.close();
-        return message;
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(Message.class, id);
+        }
     }
 
     @Override
     public List<Message> getAll() {
-        Session session = sessionFactory.openSession();
-        List<Message> list = session.createQuery("from Message", Message.class)
-                .getResultList();
-        session.close();
-        return list;
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Message", Message.class)
+                    .getResultList();
+        }
     }
 
     @Override
     public void remove(Message entity) {
-        Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
-        session.remove(entity);
-        tx.commit();
-        session.close();
+        Transaction tx = null;
+        try (Session session = sessionFactory.openSession()) {
+            tx = session.beginTransaction();
+            session.remove(session.contains(entity) ? entity : session.merge(entity));
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            throw new RuntimeException("Can't remove message", e);
+        }
     }
 }
+
 

@@ -1,12 +1,14 @@
 package core.basesyntax.dao.impl;
 
-import core.basesyntax.HibernateUtil;
-import core.basesyntax.dao.CommentDao;
-import core.basesyntax.model.Comment;
 import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+
+import core.basesyntax.HibernateUtil;
+import core.basesyntax.dao.CommentDao;
+import core.basesyntax.model.Comment;
 
 public class CommentDaoImpl implements CommentDao {
     private final SessionFactory sessionFactory;
@@ -21,38 +23,49 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public Comment create(Comment entity) {
-        Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
-        session.persist(entity);
-        tx.commit();
-        session.close();
-        return entity;
+        Transaction tx = null;
+        try (Session session = sessionFactory.openSession()) {
+            tx = session.beginTransaction();
+            session.persist(entity);
+            tx.commit();
+            return entity;
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            throw new RuntimeException("Can't create comment", e);
+        }
     }
 
     @Override
     public Comment get(Long id) {
-        Session session = sessionFactory.openSession();
-        Comment comment = session.get(Comment.class, id);
-        session.close();
-        return comment;
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(Comment.class, id);
+        }
     }
 
     @Override
     public List<Comment> getAll() {
-        Session session = sessionFactory.openSession();
-        List<Comment> list = session.createQuery("from Comment", Comment.class)
-                .getResultList();
-        session.close();
-        return list;
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Comment", Comment.class)
+                    .getResultList();
+        }
     }
 
     @Override
     public void remove(Comment entity) {
-        Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
-        session.remove(entity);
-        tx.commit();
-        session.close();
+        Transaction tx = null;
+        try (Session session = sessionFactory.openSession()) {
+            tx = session.beginTransaction();
+            session.remove(session.contains(entity) ? entity : session.merge(entity));
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            throw new RuntimeException("Can't remove comment", e);
+        }
     }
 }
+
 

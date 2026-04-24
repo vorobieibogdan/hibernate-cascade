@@ -1,12 +1,14 @@
 package core.basesyntax.dao.impl;
 
-import core.basesyntax.HibernateUtil;
-import core.basesyntax.dao.SmileDao;
-import core.basesyntax.model.Smile;
 import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+
+import core.basesyntax.HibernateUtil;
+import core.basesyntax.dao.SmileDao;
+import core.basesyntax.model.Smile;
 
 public class SmileDaoImpl implements SmileDao {
     private final SessionFactory sessionFactory;
@@ -21,29 +23,33 @@ public class SmileDaoImpl implements SmileDao {
 
     @Override
     public Smile create(Smile smile) {
-        Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
-        session.persist(smile);
-        tx.commit();
-        session.close();
-        return smile;
+        Transaction tx = null;
+        try (Session session = sessionFactory.openSession()) {
+            tx = session.beginTransaction();
+            session.persist(smile);
+            tx.commit();
+            return smile;
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            throw new RuntimeException("Can't create smile", e);
+        }
     }
 
     @Override
     public Smile get(Long id) {
-        Session session = sessionFactory.openSession();
-        Smile smile = session.get(Smile.class, id);
-        session.close();
-        return smile;
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(Smile.class, id);
+        }
     }
 
     @Override
     public List<Smile> getAll() {
-        Session session = sessionFactory.openSession();
-        List<Smile> list = session.createQuery("from Smile", Smile.class)
-                .getResultList();
-        session.close();
-        return list;
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM Smile", Smile.class)
+                    .getResultList();
+        }
     }
 }
 
