@@ -1,13 +1,14 @@
 package core.basesyntax.dao.impl;
 
-import core.basesyntax.HibernateUtil;
-import core.basesyntax.dao.MessageDao;
-import core.basesyntax.model.Message;
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import java.util.List;
+import core.basesyntax.HibernateUtil;
+import core.basesyntax.dao.MessageDao;
+import core.basesyntax.model.Message;
 
 public class MessageDaoImpl implements MessageDao {
     private final SessionFactory sessionFactory;
