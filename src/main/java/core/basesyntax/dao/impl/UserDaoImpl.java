@@ -7,7 +7,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.util.List;
-import java.util.Optional;
 
 public class UserDaoImpl implements UserDao {
     private final SessionFactory sessionFactory;
@@ -18,29 +17,29 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User create(User user) {
-        Transaction transaction = null;
+        Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
+            tx = session.beginTransaction();
             session.persist(user);
-            transaction.commit();
+            tx.commit();
             return user;
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
+            if (tx != null) {
+                tx.rollback();
             }
             throw new RuntimeException("Can't create user", e);
         }
     }
 
     @Override
-    public Optional<User> get(Long id) {
+    public User get(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            User user = session.createQuery(
+            return session.createQuery(
                             "FROM User u LEFT JOIN FETCH u.comments WHERE u.id = :id",
-                            User.class)
+                            User.class
+                    )
                     .setParameter("id", id)
-                    .uniqueResult();
-            return Optional.ofNullable(user);
+                    .uniqueResult(); // повертає User або null — це ок для твого контракту
         }
     }
 
@@ -54,14 +53,14 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void remove(User user) {
-        Transaction transaction = null;
+        Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
+            tx = session.beginTransaction();
             session.remove(session.contains(user) ? user : session.merge(user));
-            transaction.commit();
+            tx.commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
+            if (tx != null) {
+                tx.rollback();
             }
             throw new RuntimeException("Can't remove user", e);
         }
