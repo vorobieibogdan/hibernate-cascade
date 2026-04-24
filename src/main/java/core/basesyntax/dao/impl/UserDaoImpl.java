@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 
 import core.basesyntax.dao.UserDao;
 import core.basesyntax.model.User;
+
 public class UserDaoImpl implements UserDao {
     private final SessionFactory sessionFactory;
     public UserDaoImpl(SessionFactory sessionFactory) {
