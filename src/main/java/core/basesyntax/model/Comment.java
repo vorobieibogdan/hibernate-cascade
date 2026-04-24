@@ -1,5 +1,7 @@
 package core.basesyntax.model;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import java.util.List;
 
 @Entity
 public class Comment {
@@ -23,7 +24,6 @@ public class Comment {
             inverseJoinColumns = @JoinColumn(name = "smile_id"))
     private List<Smile> smiles;
 
-    // getters & setters
     public Long getId() {
         return id;
     }
@@ -48,6 +48,5 @@ public class Comment {
         this.smiles = smiles;
     }
 }
-
 
 
