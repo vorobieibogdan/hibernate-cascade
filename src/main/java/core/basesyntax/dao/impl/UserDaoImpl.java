@@ -8,14 +8,11 @@ import org.hibernate.Transaction;
 
 import core.basesyntax.dao.UserDao;
 import core.basesyntax.model.User;
-
 public class UserDaoImpl implements UserDao {
     private final SessionFactory sessionFactory;
-
     public UserDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
-
     @Override
     public User create(User user) {
         Transaction tx = null;
@@ -31,7 +28,6 @@ public class UserDaoImpl implements UserDao {
             throw new RuntimeException("Can't create user", e);
         }
     }
-
     @Override
     public User get(Long id) {
         try (Session session = sessionFactory.openSession()) {
@@ -41,14 +37,12 @@ public class UserDaoImpl implements UserDao {
             ).setParameter("id", id).uniqueResult();
         }
     }
-
     @Override
     public List<User> getAll() {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("FROM User", User.class).getResultList();
         }
     }
-
     @Override
     public void remove(User user) {
         Transaction tx = null;
@@ -64,3 +58,4 @@ public class UserDaoImpl implements UserDao {
         }
     }
 }
+
