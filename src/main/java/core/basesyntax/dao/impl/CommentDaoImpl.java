@@ -1,14 +1,13 @@
 package core.basesyntax.dao.impl;
 
-import java.util.List;
-
+import core.basesyntax.HibernateUtil;
+import core.basesyntax.dao.CommentDao;
+import core.basesyntax.model.Comment;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import core.basesyntax.HibernateUtil;
-import core.basesyntax.dao.CommentDao;
-import core.basesyntax.model.Comment;
+import java.util.List;
 
 public class CommentDaoImpl implements CommentDao {
     private final SessionFactory sessionFactory;
@@ -67,5 +66,6 @@ public class CommentDaoImpl implements CommentDao {
         }
     }
 }
+
 
 

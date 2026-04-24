@@ -1,13 +1,12 @@
 package core.basesyntax.dao.impl;
 
-import java.util.List;
-
+import core.basesyntax.dao.UserDao;
+import core.basesyntax.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import core.basesyntax.dao.UserDao;
-import core.basesyntax.model.User;
+import java.util.List;
 
 public class UserDaoImpl implements UserDao {
     private final SessionFactory sessionFactory;
@@ -67,5 +66,7 @@ public class UserDaoImpl implements UserDao {
         }
     }
 }
+
+
 
 
