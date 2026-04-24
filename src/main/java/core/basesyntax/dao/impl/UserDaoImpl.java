@@ -5,6 +5,7 @@ import core.basesyntax.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +17,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User save(User user) {
+    public User create(User user) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
@@ -27,12 +28,12 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can't save user", e);
+            throw new RuntimeException("Can't create user", e);
         }
     }
 
     @Override
-    public Optional<User> getById(Long id) {
+    public Optional<User> get(Long id) {
         try (Session session = sessionFactory.openSession()) {
             User user = session.createQuery(
                             "FROM User u LEFT JOIN FETCH u.comments WHERE u.id = :id",
@@ -44,18 +45,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User create(User entity) {
-        return null;
-    }
-
-    @Override
-    public User get(Long id) {
-        return null;
-    }
-
-    @Override
     public List<User> getAll() {
-        return null;
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM User", User.class)
+                    .getResultList();
+        }
     }
 
     @Override
