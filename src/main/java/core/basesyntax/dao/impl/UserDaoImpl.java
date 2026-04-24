@@ -11,7 +11,6 @@ import core.basesyntax.model.User;
 
 public class UserDaoImpl implements UserDao {
     private final SessionFactory sessionFactory;
-
     public UserDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -60,3 +59,4 @@ public class UserDaoImpl implements UserDao {
         }
     }
 }
+

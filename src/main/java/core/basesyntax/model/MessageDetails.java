@@ -1,11 +1,10 @@
 package core.basesyntax.model;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
 
 @Entity
 public class MessageDetails {
@@ -16,6 +15,7 @@ public class MessageDetails {
     private String sender;
     private LocalDateTime sentTime;
 
+    // getters & setters
     public Long getId() {
         return id;
     }
@@ -40,3 +40,6 @@ public class MessageDetails {
         this.sentTime = sentTime;
     }
 }
+
+
+
